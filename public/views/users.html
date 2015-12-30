@@ -1,0 +1,61 @@
+<div layout="column" ng-controller="usersCtrl">
+<md-card>
+      <md-card-content>
+      	        
+        <md-data-table-toolbar ng-hide="filter.show">
+		  <h2 class="md-title">Users</h2>
+		  
+		  <div flex></div>
+		  
+		  <md-button class="md-icon-button" ng-click="createUser()">
+		    <i class="material-icons md-dark">add_circle_outline</i>
+		  </md-button>
+		  <md-button class="md-icon-button" ng-click="filter.show = true">
+		    <i class="material-icons md-dark">search</i>
+		  </md-button>
+		  
+		</md-data-table-toolbar>
+				
+		<md-data-table-toolbar ng-show="filter.show">
+		  <i class="material-icons md-dark">search</i>
+		  <form flex name="filter.form">
+		    <input type="text" ng-model="query.filter" ng-model-options="filter.options" placeholder="search">
+		  </form>
+		  <md-button class="md-icon-button" ng-click="removeFilter()">
+		    <i class="material-icons md-dark">close</i>
+		  </md-button>
+		</md-data-table-toolbar>
+        
+        <md-data-table-container>
+		  <table md-data-table md-progress="deferred">
+		    <thead md-order="username" md-trigger="onOrderChange">
+		      <tr>
+		      	<th style="width:80px;padding:0;"></th>
+		        <th name="Username" descend-first order-by="username" style="width:200px"></th>
+		        <th name="Lastname" order-by="lastname" style="width:150px"></th>
+		        <th name="Firstname" order-by="firstname" style="width:150px"></th>
+		        <th name="Role" order-by="role"></th>
+		        <th name="Zones"></th>        
+		      </tr>
+		    </thead>
+		    <tbody>
+		      <tr ng-repeat="user in users | orderBy: username" md-disable-select="true">
+		        <td style="width:80px;padding:0;"><md-button style="margin:0;" class="md-icon-button" ng-click="update(user)">
+				    <i class="material-icons md-18 md-dark">create</i>
+				  </md-button><md-button style="margin:0;" class="md-icon-button" ng-click="remove(user)">
+				    <i class="material-icons md-18 md-dark">delete</i>
+				  </md-button>
+				</td>
+		        <td>{{user.username}}</td>
+		        <td>{{user.lastname}}</td>
+		        <td>{{user.firstname}}</td>
+		        <td>{{user.role}}</td>
+				<td><span ng-repeat="zone in user.zones">{{zone.name}}&nbsp;/&nbsp;</span></td>
+		      </tr>
+		    </tbody>
+		  </table>
+		</md-data-table-container>
+	  </md-card-content>  
+</md-card>
+
+</div>

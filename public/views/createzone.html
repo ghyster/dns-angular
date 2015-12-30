@@ -1,0 +1,47 @@
+<md-dialog aria-label="Create/Edit zone"  ng-cloak>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>Create/Edit zone</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <i class="material-icons md-dark">close</i>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content style="width:500px;max-height:810px; ">
+   <form novalidate name="zoneForm">
+    <div class="md-dialog-content" layout="column">
+	    
+	    <div layout="row" layout-sm="column">
+	      <md-input-container flex >
+	          <label>Name</label>
+	          <input name="name" ng-model="zone.name" />
+	                	  
+	      </md-input-container>		    
+        </div>
+        <div layout="row" layout-sm="column">
+	      <md-input-container flex >
+	          <label>TSIG key name</label>
+	          <input name="tsigname" ng-model="zone.tsigname" />
+	                	  
+	      </md-input-container>
+	      <md-input-container flex >
+	          <label>TSIG key value</label>
+	          <input name="tsigkey" ng-model="zone.tsigkey" />
+	                	  
+	      </md-input-container>		 		    
+        </div>
+        
+    </div>
+    </form>
+  </md-dialog-content>
+  <div class="md-actions" layout="row">
+    <md-button class="md-icon-button" ng-click="cancel()">
+     <i class="material-icons md-dark">close</i>
+    </md-button>
+    <md-button class="md-icon-button" ng-click="save()">
+     <i class="material-icons md-dark">save</i>
+    </md-button>
+  </div>
+  
+</md-dialog>

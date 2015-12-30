@@ -1,0 +1,44 @@
+<md-dialog aria-label="Edit record"  ng-cloak>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>Edit record {{record.name}}</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <i class="material-icons md-dark">close</i>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content style="width:500px;max-height:810px; ">
+   <form novalidate name="recordForm">
+    <div class="md-dialog-content" layout="column">
+	    
+	    <div layout="row" layout-sm="column">
+	      <md-input-container flex >
+	          <label>Value</label>
+	          <input dnsrecordvalue name="rdata" ng-model="record.rdata" />
+	          <div ng-messages="recordForm.rdata.$error">
+		          <div ng-message="dnsrecordvalue"> 
+		          <span ng-show="record.type=='CNAME'">A FQDN is expected.</span>
+		          <span ng-show="record.type=='A'">An IPV4 address is expected.</span>
+		          </div>
+		      </div>	      	  
+	      </md-input-container>
+
+		    <md-input-container flex>
+	          <label>TTL</label>
+	          <input type="number" min="0" max="86400" ng-model="record.ttl" />
+	      </md-input-container>
+        </div>
+    </div>
+    </form>
+  </md-dialog-content>
+  <div class="md-actions" layout="row">
+    <md-button class="md-icon-button" ng-click="cancel()">
+     <i class="material-icons md-dark">close</i>
+    </md-button>
+    <md-button class="md-icon-button" ng-click="save()">
+     <i class="material-icons md-dark">save</i>
+    </md-button>
+  </div>
+  
+</md-dialog>

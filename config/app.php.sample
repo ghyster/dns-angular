@@ -1,0 +1,11 @@
+<?php
+
+return [
+
+		'dnsservers'=> ["xx.xx.xx.xx"],
+	'authtype' => 'google', //choose between saml, google
+	'google_client_id' => "xxx",
+	'google_client_secret' => "xxx",
+  'google_application_name' => "xxx",
+	'google_redirect_uri' => "xxx/goauth2callback"
+];

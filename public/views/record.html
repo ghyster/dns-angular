@@ -1,0 +1,57 @@
+<md-dialog aria-label="Create record"  ng-cloak>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>Create record</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <i class="material-icons md-dark">close</i>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content style="width:500px;max-height:810px; ">
+   <form novalidate name="recordForm">
+    <div class="md-dialog-content" layout="column">
+	    <div layout="row" layout-sm="column">
+	      <md-input-container flex>
+	          <label>Name</label>
+	          <input required name="name" ng-model="record.name" ng-pattern="/^[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]$/" />
+	          <div ng-messages="recordForm.name.$error">
+		          <div ng-message-exp="['required', 'pattern']">An alphanumeric string is expected</div>
+		      </div>
+	      </md-input-container>
+
+	      <md-select ng-model="record.type" flex="20">
+	         <md-option ng-value="type" ng-repeat="type in recordtypes">{{ type }}</md-option>
+		  </md-select>
+	    </div>
+	    <div layout="row" layout-sm="column">
+	      <md-input-container flex >
+	          <label>Value</label>
+	          <input dnsrecordvalue name="rdata" ng-model="record.rdata" />
+	          <div ng-messages="recordForm.rdata.$error">
+		          <div ng-message="dnsrecordvalue">This value is invalid. 
+		          <span ng-show="record.type=='CNAME'"> A FQDN is expected.</span>
+		          <span ng-show="record.type=='A'"> An IPV4 address is expected.</span>
+		          </div>
+		      </div>	      	  
+	      </md-input-container>
+
+		    <md-input-container flex>
+	          <label>TTL</label>
+	          <input type="number" min="0" max="86400" ng-model="record.ttl" />
+	      </md-input-container>
+        </div>
+        
+    </div>
+    </form>
+  </md-dialog-content>
+  <div class="md-actions" layout="row">
+    <md-button class="md-icon-button" ng-click="cancel()">
+     <i class="material-icons md-dark">close</i>
+    </md-button>
+    <md-button class="md-icon-button" ng-click="save()" >
+     <i class="material-icons md-dark">save</i>
+    </md-button>
+  </div>
+  
+</md-dialog>

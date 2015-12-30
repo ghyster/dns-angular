@@ -1,0 +1,56 @@
+<md-dialog aria-label="Create/Edit user"  ng-cloak>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>Create/Edit user</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <i class="material-icons md-dark">close</i>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content style="width:500px;max-height:810px; ">
+   <form novalidate name="userForm">
+    <div class="md-dialog-content" layout="column">
+
+	    <div layout="row" layout-sm="column">
+	      <md-input-container flex >
+	          <label>Username</label>
+	          <input name="username" ng-model="user.username" />
+	      </md-input-container>
+        <md-input-container>
+          <label>Role</label>
+          <md-select ng-model="user.role">
+            <md-option value="user">user</md-option>
+            <md-option value="admin">admin</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div layout="row" layout-sm="column">
+	      <md-input-container flex >
+	          <label>Lastname</label>
+	          <input name="lastname" ng-model="user.lastname" />
+	      </md-input-container>
+        <md-input-container flex >
+	          <label>Firstname</label>
+	          <input name="firstname" ng-model="user.firstname" />
+	      </md-input-container>
+      </div>
+    
+    <md-list ng-cloak ng-show="user.id>0 && user.role=='user'">
+    <md-subheader class="md-no-sticky">User zones</md-subheader>
+    <md-list-item ng-repeat="zone in uzones">
+      <p> {{ zone.name }} </p>
+      <md-checkbox class="md-secondary" ng-checked="exists(zone, user.zones)" ng-click="toggle(zone, user.zones)"></md-checkbox>
+    </md-list-item>
+    </form>
+  </md-dialog-content>
+  <div class="md-actions" layout="row">
+    <md-button class="md-icon-button" ng-click="cancel()">
+     <i class="material-icons md-dark">close</i>
+    </md-button>
+    <md-button class="md-icon-button" ng-click="save()">
+     <i class="material-icons md-dark">save</i>
+    </md-button>
+  </div>
+
+</md-dialog>

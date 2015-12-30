@@ -1,0 +1,58 @@
+<div layout="column" ng-controller="zonesCtrl">
+<md-card>
+      <md-card-content>
+      	        
+        <md-data-table-toolbar ng-hide="filter.show">
+		  <h2 class="md-title">DNS zones</h2>
+		  
+		  <div flex></div>
+		  
+		  <md-button class="md-icon-button" ng-click="createZone()">
+		    <i class="material-icons md-dark">add_circle_outline</i>
+		  </md-button>
+		  <md-button class="md-icon-button" ng-click="filter.show = true">
+		    <i class="material-icons md-dark">search</i>
+		  </md-button>
+		  
+		</md-data-table-toolbar>
+				
+		<md-data-table-toolbar ng-show="filter.show">
+		  <i class="material-icons md-dark">search</i>
+		  <form flex name="filter.form">
+		    <input type="text" ng-model="query.filter" ng-model-options="filter.options" placeholder="search">
+		  </form>
+		  <md-button class="md-icon-button" ng-click="removeFilter()">
+		    <i class="material-icons md-dark">close</i>
+		  </md-button>
+		</md-data-table-toolbar>
+        
+        <md-data-table-container>
+		  <table md-data-table md-progress="deferred">
+		    <thead md-order="name" md-trigger="onOrderChange">
+		      <tr>
+		      	<th style="width:80px;padding:0;"></th>
+		        <th name="Zone name" descend-first order-by="name" style="width:300px"></th>
+		        <th name="TSIG name" style="width:100px"></th>
+		        <th name="TSIG value" style="width:100px"></th>
+		               
+		      </tr>
+		    </thead>
+		    <tbody>
+		      <tr ng-repeat="zone in mzones | orderBy: name" md-disable-select="true">
+		        <td style="width:80px;padding:0;"><md-button style="margin:0;" class="md-icon-button" ng-click="update(zone)">
+				    <i class="material-icons md-18 md-dark">create</i>
+				  </md-button><md-button style="margin:0;" class="md-icon-button" ng-click="remove(zone)">
+				    <i class="material-icons md-18 md-dark">delete</i>
+				  </md-button>
+				</td>
+		        <td>{{zone.name}}</td>
+		        <td><i class="material-icons md-dark" ng-show="zone.hastsigname">check</i></td>
+		        <td><i class="material-icons md-dark" ng-show="zone.hastsigkey">check</i></td>
+		        
+		      </tr>
+		    </tbody>
+		  </table>
+		</md-data-table-container>
+	  </md-card-content>  
+</md-card>
+</div>

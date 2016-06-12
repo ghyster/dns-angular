@@ -20,6 +20,12 @@ class HomeController extends Controller {
 	 */
 	public function __construct()
 	{
+		if(!file_exists(storage_path('installed'))){
+			//echo "application not installed";
+			//die();
+			return redirect('/install');
+			//die();
+		}
 		$this->middleware('auth');
 	}
 
@@ -30,6 +36,12 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
+		if(!file_exists(storage_path('installed'))){
+			//echo "application not installed";
+			//die();
+			return redirect('/install');
+			//die();
+		}
 		return view('home');
 	}
 

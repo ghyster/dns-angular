@@ -27,6 +27,7 @@
     23 => 'App\\Providers\\EventServiceProvider',
     24 => 'App\\Providers\\RouteServiceProvider',
     25 => 'Aacotroneo\\Saml2\\Saml2ServiceProvider',
+    26 => 'RachidLaasri\\LaravelInstaller\\Providers\\LaravelInstallerServiceProvider',
   ),
   'eager' => 
   array (
@@ -45,6 +46,7 @@
     12 => 'App\\Providers\\EventServiceProvider',
     13 => 'App\\Providers\\RouteServiceProvider',
     14 => 'Aacotroneo\\Saml2\\Saml2ServiceProvider',
+    15 => 'RachidLaasri\\LaravelInstaller\\Providers\\LaravelInstallerServiceProvider',
   ),
   'deferred' => 
   array (
@@ -56,6 +58,7 @@
     'memcached.connector' => 'Illuminate\\Cache\\CacheServiceProvider',
     'command.cache.clear' => 'Illuminate\\Cache\\CacheServiceProvider',
     'command.clear-compiled' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
+    'command.auth.resets.clear' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'command.config.cache' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'command.config.clear' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'command.down' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',

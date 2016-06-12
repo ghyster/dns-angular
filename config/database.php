@@ -26,7 +26,7 @@ return [
 	|
 	*/
 
-	'default' => 'mysql',
+	'default' => env('DB_TYPE','mysql'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,10 +54,10 @@ return [
 
 		'mysql' => [
 			'driver'    => 'mysql',
-			'host'      => env('DB_HOST', 'link_mariadb'),
-			'database'  => env('DB_DATABASE', 'dns'),
-			'username'  => env('DB_USERNAME', 'dns'),
-			'password'  => env('DB_PASSWORD', 'V2CjxRGYLJXUs44L'),
+			'host'      => env('DB_HOST', 'localhost'),
+      'database'  => env('DB_DATABASE', 'forge'),
+      'username'  => env('DB_USERNAME', 'forge'),
+      'password'  => env('DB_PASSWORD', ''),
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',

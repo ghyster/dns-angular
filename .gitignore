@@ -8,5 +8,5 @@ composer.lock
 .DS_Store
 workspace.xml
 Thumbs.db
-/config/app.php
+.env
 /config/saml2_settings.php

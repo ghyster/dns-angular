@@ -8,7 +8,8 @@
 		"laravel/framework": "5.2.*",
 		"pear/net_dns2": "^1.4",
 		"aacotroneo/laravel-saml2": "^0.6.0",
-		"google/apiclient": "1.0.*@beta"
+		"google/apiclient": "1.0.*@beta",
+		"rachidlaasri/laravel-installer": "1.4.1"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",

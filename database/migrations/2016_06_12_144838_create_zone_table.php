@@ -17,6 +17,7 @@ class CreateZoneTable extends Migration
             $table->string('name')->unique();
             $table->binary('tsigname')->nullable()->default(null);
             $table->binary('tsigkey')->nullable()->default(null);
+            $table->boolean('reverse')->default(false);
             $table->timestamps();
         });
     }

@@ -38,19 +38,19 @@ dns.config(function ($stateProvider, $urlRouterProvider){
 dns.controller('dnsCtrl', ['$scope', '$mdSidenav','zoneService', function($scope, $mdSidenav, zoneService){
 	  $scope.profilemenu = true;
 	  $scope.zones = null;
-	  
+
 	  $scope.toggleSidenav = function(menuId) {
 	    $mdSidenav(menuId).toggle();
 	  };
-	  
+
 	  $scope.$on('zones:updated', function(event,data) {
 		     $scope.zones = data;
 	  });
-	  
+
 	  $scope.disconnect = function(){
 		  document.location="/login/googlelogout";
 	  };
-	  
+
 	  zoneService.getZones();
 
 }])
@@ -70,7 +70,12 @@ dns.controller('zoneCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', 'z
 	  };
 
 	  function DialogController($scope, $mdDialog, record,zone) {
-		  $scope.recordtypes=['A','CNAME'];
+      //console.log(zone.reverse);
+      if(zone.reverse!=1){
+		      $scope.recordtypes=['A','CNAME'];
+      }else{
+          $scope.recordtypes=['PTR'];
+      }
 		  $scope.cancel = function() {
 			  //$scope.recordForm.$setPristine();
 			  //$scope.recordForm.rdata = $scope.orirecord.rdata;
@@ -84,11 +89,14 @@ dns.controller('zoneCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', 'z
 		  };
 		  $scope.record=record;
 		  $scope.orirecord = angular.copy(record);
+      if(zone.reverse==1){
+        $scope.record.type="PTR";
+      }
 		  $scope.zone=zone;
 		  //$scope.form = {};
 		  $scope.save = function() {
 			  if($scope.recordForm.$valid==true){
-				zoneService.saveRecord($scope.record,$scope.zone);
+				zoneService.saveRecord($scope.record,$scope.zone,$scope.orirecord);
 				$scope.record={};
 				$mdDialog.hide();
 			  }
@@ -341,7 +349,7 @@ dns.controller('usersCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', '
 		  };
 		  $scope.user=user;
 		  //console.log(zoneService);
-      
+
 		  zoneService.getZones();
 	      $scope.$on('zones:updated', function(event,data) {
 	  		     $scope.uzones = data;
@@ -358,7 +366,7 @@ dns.controller('usersCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', '
 				$mdDialog.hide();
 			  }
 		  };
-		  
+
 		  $scope.toggle = function (item, list) {
 		        //console.log(list);
 			    var idx = list.map(function(e) { return e.id; }).indexOf(item.id);
@@ -466,9 +474,12 @@ dns.service('zoneService', ['$resource', '$http', '$rootScope', function($resour
 		return zone.get({id: id});
 	}
 
-	this.saveRecord = function(record, zone){
+	this.saveRecord = function(record, zone, orirecord){
 		var rrecord = $resource("zone/record");
-
+    //console.log(orirecord);
+    if(orirecord.hasOwnProperty('name')){
+      record.ori=orirecord;
+    }
 		$http.post('/zone/record',  record)
 		  .then(function successCallback(response) {
 			  zone.records=response.data;
@@ -562,8 +573,8 @@ dns.directive('dnsrecordvalue',function(){
 	                    	//console.log(viewValue.match(/\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/));
 	                        var m=viewValue.match(/\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/);
 	                    	return m!=null;
-                    	}else if(scope.record.type=='CNAME'){
-                    		var m=viewValue.match(/(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z]{2,})$)/);
+                    	}else if(scope.record.type=='CNAME' || scope.record.type=='PTR'){
+                    		var m=viewValue.match(/(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z\.]{2,})$)/);
                     		return m!=null;
                     	}else{
                     		return false;

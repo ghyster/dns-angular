@@ -11,17 +11,18 @@
   <md-dialog-content style="width:500px;max-height:810px; ">
    <form novalidate name="recordForm">
     <div class="md-dialog-content" layout="column">
-	    
+
 	    <div layout="row" layout-sm="column">
 	      <md-input-container flex >
 	          <label>Value</label>
 	          <input dnsrecordvalue name="rdata" ng-model="record.rdata" />
 	          <div ng-messages="recordForm.rdata.$error">
-		          <div ng-message="dnsrecordvalue"> 
+		          <div ng-message="dnsrecordvalue">
 		          <span ng-show="record.type=='CNAME'">A FQDN is expected.</span>
+              <span ng-show="record.type=='PTR'">A FQDN is expected.</span>		          
 		          <span ng-show="record.type=='A'">An IPV4 address is expected.</span>
 		          </div>
-		      </div>	      	  
+		      </div>
 	      </md-input-container>
 
 		    <md-input-container flex>
@@ -40,5 +41,5 @@
      <i class="material-icons md-dark">save</i>
     </md-button>
   </div>
-  
+
 </md-dialog>

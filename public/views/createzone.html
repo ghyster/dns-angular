@@ -11,27 +11,32 @@
   <md-dialog-content style="width:500px;max-height:810px; ">
    <form novalidate name="zoneForm">
     <div class="md-dialog-content" layout="column">
-	    
+
 	    <div layout="row" layout-sm="column">
 	      <md-input-container flex >
 	          <label>Name</label>
 	          <input name="name" ng-model="zone.name" />
-	                	  
-	      </md-input-container>		    
+
+	      </md-input-container>
+        <md-input-container flex >
+          <md-checkbox ng-model="zone.reverse" ng-true-value="1" ng-false-value="0" aria-label="Reverse zone">
+  	          Reverse zone
+  	        </md-checkbox>
+        </md-input-container>  
         </div>
         <div layout="row" layout-sm="column">
 	      <md-input-container flex >
 	          <label>TSIG key name</label>
 	          <input name="tsigname" ng-model="zone.tsigname" />
-	                	  
+
 	      </md-input-container>
 	      <md-input-container flex >
 	          <label>TSIG key value</label>
 	          <input name="tsigkey" ng-model="zone.tsigkey" />
-	                	  
-	      </md-input-container>		 		    
+
+	      </md-input-container>
         </div>
-        
+
     </div>
     </form>
   </md-dialog-content>
@@ -43,5 +48,5 @@
      <i class="material-icons md-dark">save</i>
     </md-button>
   </div>
-  
+
 </md-dialog>

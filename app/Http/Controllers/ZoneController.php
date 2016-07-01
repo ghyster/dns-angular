@@ -21,6 +21,13 @@ class ZoneController extends Controller {
 		$this->middleware('auth');
 	}
 
+	public function getTest(){
+		$app=app();
+		//var_dump($app['DnsService']);
+		//return array();
+		echo $app['DnsService']->test();
+	}
+
 	private function getAllZones(){
 		$zones=\Auth::user()->zones();
 
@@ -29,6 +36,7 @@ class ZoneController extends Controller {
 			$ret[]=array(
 			"id" => $z->id,
 			"name" => $z->name,
+			"reverse" => $z->reverse,
 			"hastsigname" => $z->tsigname!=null && $z->tsigname!="",
 		    "hastsigkey" => $z->tsigkey!=null && $z->tsigkey!=""
 			);
@@ -54,6 +62,7 @@ class ZoneController extends Controller {
 		$ret=array(
 			'id' => $zone->id,
 			'name' => $zone->name,
+			'reverse' => $zone->reverse,
 			'records' => $zone->getRecords()
 		);
 
@@ -87,7 +96,9 @@ class ZoneController extends Controller {
 	}
 
 	public function postSave(){
-
+		if(\Auth::user()->role!="admin"){
+			abort(401);
+		}
 		$data = \Input::all();
 		$validator = \Validator::make(
 				$data,

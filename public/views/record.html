@@ -14,7 +14,7 @@
 	    <div layout="row" layout-sm="column">
 	      <md-input-container flex>
 	          <label>Name</label>
-	          <input required name="name" ng-model="record.name" ng-pattern="/^[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]$/" />
+	          <input required name="name" ng-model="record.name" ng-pattern="/^[a-zA-Z0-9][a-zA-Z0-9-\.]+[a-zA-Z0-9]$/" />
 	          <div ng-messages="recordForm.name.$error">
 		          <div ng-message-exp="['required', 'pattern']">An alphanumeric string is expected</div>
 		      </div>
@@ -29,11 +29,12 @@
 	          <label>Value</label>
 	          <input dnsrecordvalue name="rdata" ng-model="record.rdata" />
 	          <div ng-messages="recordForm.rdata.$error">
-		          <div ng-message="dnsrecordvalue">This value is invalid. 
+		          <div ng-message="dnsrecordvalue">This value is invalid.
+              <span ng-show="record.type=='PTR'"> A FQDN is expected.</span>
 		          <span ng-show="record.type=='CNAME'"> A FQDN is expected.</span>
 		          <span ng-show="record.type=='A'"> An IPV4 address is expected.</span>
 		          </div>
-		      </div>	      	  
+		      </div>
 	      </md-input-container>
 
 		    <md-input-container flex>
@@ -41,7 +42,7 @@
 	          <input type="number" min="0" max="86400" ng-model="record.ttl" />
 	      </md-input-container>
         </div>
-        
+
     </div>
     </form>
   </md-dialog-content>
@@ -53,5 +54,5 @@
      <i class="material-icons md-dark">save</i>
     </md-button>
   </div>
-  
+
 </md-dialog>

@@ -41,28 +41,26 @@ class User extends Model implements AuthenticatableContract/*, CanResetPasswordC
 	public function zone($id){
 
 		if($this->role=="admin"){
-			return Zone::find($id)->firstOrFail();
+			return Zone::find($id);
 		}
 
-		return $this->belongsToMany('App\Zone', 'user_zone','user', 'zone')->getQuery()->whereRaw('id = '.$id)->firstOrFail();
-	}
-	
+		return $this->belongsToMany('App\Zone', 'user_zone','user', 'zone')->getQuery()->whereRaw('id = '.$id);
+	}	
+
 	public function uzones(){
 		return $this->belongsToMany('App\Zone', 'user_zone','user', 'zone');
 	}
-	
+
 	public function syncZones($zones){
-		
+
 		//manage zone access
 		$newids=[];
 		foreach($zones as $zone){
 			//echo $zone["id"].",";
 			$newids[]=$zone["id"];
 		}
-		//var_dump($newids);
-		//die();
 		$this->uzones()->sync($newids);
-		
+
 	}
 	/*public function getAccountsAttribute()
 	{

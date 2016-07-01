@@ -3,7 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 
 class Zone extends Model {
-	
+
 	/**
 	 * The database table used by the model.
 	 *
@@ -16,14 +16,14 @@ class Zone extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['name', 'tsigname', 'tsigkey'];
-	
+	protected $fillable = ['name', 'tsigname', 'tsigkey', 'reverse'];
+
 	public function getRecords(){
 		$app=app();
 		//var_dump($app['DnsService']);
 		//return array();
 		$rdata=$app['DnsService']->getRecords($this);
-		
+
 		$ret=array();
 		foreach($rdata as $r){
 			//echo $r->rrToString2();
@@ -39,19 +39,19 @@ class Zone extends Model {
 			}
 		}
 		return $ret;
-		
+
 	}
-	
+
 	public function saveRecord($data){
 		$app=app();
 		$app['DnsService']->saveRecord($data,$this);
 		return $this->getRecords();
 	}
-	
+
 	public function removeRecord($data){
 		$app=app();
 		$app['DnsService']->removeRecord($data,$this);
 		return $this->getRecords();
 	}
-	
+
 }

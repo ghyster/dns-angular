@@ -26,8 +26,6 @@ class Zone extends Model {
 
 		$ret=array();
 		foreach($rdata as $r){
-			//echo $r->rrToString2();
-			//echo "<br/><br/>";
 			if($r->type!="SOA" && $r->type!="NS"){
 				$ret[]=array(
 						"name" => str_replace(".".$this->name,"",$r->name),

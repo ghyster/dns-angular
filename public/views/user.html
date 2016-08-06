@@ -35,22 +35,23 @@
 	          <input name="firstname" ng-model="user.firstname" />
 	      </md-input-container>
       </div>
-    
+
     <md-list ng-cloak ng-show="user.id>0 && user.role=='user'">
-    <md-subheader class="md-no-sticky">User zones</md-subheader>
-    <md-list-item ng-repeat="zone in uzones">
-      <p> {{ zone.name }} </p>
-      <md-checkbox class="md-secondary" ng-checked="exists(zone, user.zones)" ng-click="toggle(zone, user.zones)"></md-checkbox>
-    </md-list-item>
+      <md-subheader class="md-no-sticky">User zones</md-subheader>
+      <md-list-item ng-repeat="zone in uzones">
+        <p> {{ zone.name }} </p>
+        <md-checkbox class="md-secondary" ng-checked="exists(zone, user.zones)" ng-click="toggle(zone, user.zones)"></md-checkbox>
+      </md-list-item>
+    </md-list>
     </form>
   </md-dialog-content>
-  <div class="md-actions" layout="row">
+  <md-dialog-actions>
     <md-button class="md-icon-button" ng-click="cancel()">
      <i class="material-icons md-dark">close</i>
     </md-button>
     <md-button class="md-icon-button" ng-click="save()">
      <i class="material-icons md-dark">save</i>
     </md-button>
-  </div>
+  </md-dialog-actions>
 
 </md-dialog>

@@ -2,13 +2,11 @@
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Model implements AuthenticatableContract/*, CanResetPasswordContract*/ {
+class User extends Model implements AuthenticatableContract {
 
-	use Authenticatable/*, CanResetPassword*/;
+	use Authenticatable;
 
 	/**
 	 * The database table used by the model.
@@ -35,7 +33,8 @@ class User extends Model implements AuthenticatableContract/*, CanResetPasswordC
 		if($this->role=="admin"){
 			return Zone::all();
 		}
-		return $this->belongsToMany('App\Zone', 'user_zone','user', 'zone');
+		//else return user zones
+		return $this->belongsToMany('App\Zone', 'user_zone','user', 'zone')->get();
 	}
 
 	public function zone($id){
@@ -43,28 +42,33 @@ class User extends Model implements AuthenticatableContract/*, CanResetPasswordC
 		if($this->role=="admin"){
 			return Zone::find($id);
 		}
-
-		return $this->belongsToMany('App\Zone', 'user_zone','user', 'zone')->getQuery()->whereRaw('id = '.$id);
-	}	
+		return $this->belongsToMany('App\Zone', 'user_zone','user', 'zone')->getQuery()->whereRaw('id = '.$id)->first();
+	}
 
 	public function uzones(){
-		return $this->belongsToMany('App\Zone', 'user_zone','user', 'zone');
+		return $this->belongsToMany('App\Zone', 'user_zone','user', 'zone')->get();
 	}
 
 	public function syncZones($zones){
 
 		//manage zone access
-		$newids=[];
-		foreach($zones as $zone){
-			//echo $zone["id"].",";
-			$newids[]=$zone["id"];
+		if( is_array( $zones ) || $zones instanceof \Traversable ){
+			$newids=[];
+			foreach($zones as $zone){
+				$newids[]=$zone["id"];
+			}
+			$this->uzones()->sync($newids);
 		}
-		$this->uzones()->sync($newids);
+	}
+
+	public function getRememberToken(){
+		return null;
+	}
+
+	public function setRememberToken($value){
 
 	}
-	/*public function getAccountsAttribute()
-	{
-		$data = $this->accounts()->getQuery()->whereRaw('active = 1')->orderBy('name', 'asc')->get();
-		return $data;
-	}*/
+	public function getRememberTokenName(){
+		return null;
+	}
 }

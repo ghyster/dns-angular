@@ -32,6 +32,7 @@ class Authenticate {
 	 */
 	public function handle($request, Closure $next)
 	{
+		
 		if ($this->auth->guest()){
 			$authtype=\Config::get('app.authtype');
 

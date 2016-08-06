@@ -29,11 +29,10 @@ class AppServiceProvider extends ServiceProvider {
 			'Illuminate\Contracts\Auth\Registrar',
 			'App\Services\Registrar'
 		);*/
-		
+
 		$this->app->singleton('DnsService', function($app)
         {
-            //var_dump(\Config::get('app.dnskey'));
-        	return new \App\Services\Dns(\Config::get('app.dnsservers'));
+          return new \App\Services\Dns(\Config::get('app.dnsservers'),\Config::get('app.dnslog'),\Config::get('app.dnsautoreverse'));
         });
 	}
 

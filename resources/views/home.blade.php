@@ -1,11 +1,12 @@
 <html data-ng-app="dns" data-ng-controller="dnsCtrl">
  <head>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0-rc5/angular-material.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/css/md-data-table.min.css" type="text/css" />
     <link rel="stylesheet" href="/css/app.css" type="text/css" />
+    <link rel="stylesheet" href="/css/{{ \Config::get('app.theme') }}" type="text/css" />
     <meta name="viewport" content="initial-scale=1" />
   </head>
   <body layout="column" ng-controller="dnsCtrl">
@@ -17,7 +18,7 @@
           <md-icon md-font-set="material-icons" aria-label="Menu" >menu</md-icon>
 
         </md-button>
-        <h1>DNS management</h1>
+        <div id="logo"></div><h1>DNS management</h1>
       </div>
     </md-toolbar>
     <div layout="row" flex>
@@ -26,11 +27,8 @@
           <div class="sidebar-inner c-overflow">
 		    <div class="profile-menu">
 		    	<div class="profile-info">
-		               {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}
-
+		               {{ Auth::user()->username }}
 					    <i class="material-icons md-dark md-18" ng-click="disconnect()">power_settings_new</i>
-
-
 		        </div>
 		    </div>
 
@@ -77,11 +75,11 @@
         </div>
     </div>
     <!-- Angular Material Dependencies -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-resource.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0-rc5/angular-material.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
     <script src="/js/angular-ui-router.min.js"></script>
     <script src="/js/ocLazyLoad.min.js"></script>
     <script src="/js/md-data-table.min.js"></script>

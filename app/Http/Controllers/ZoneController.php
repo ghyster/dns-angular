@@ -16,21 +16,13 @@ class ZoneController extends Controller {
 	 *
 	 * @return void
 	 */
-	public function __construct()
-	{
+	public function __construct(){
 		$this->middleware('auth');
 	}
 
-	public function getTest(){
-		$app=app();
-		//var_dump($app['DnsService']);
-		//return array();
-		echo $app['DnsService']->test();
-	}
-
 	private function getAllZones(){
-		$zones=\Auth::user()->zones();
 
+		$zones=\Auth::user()->zones();
 		$ret=array();
 		foreach($zones as $z){
 			$ret[]=array(
@@ -41,7 +33,6 @@ class ZoneController extends Controller {
 		    "hastsigkey" => $z->tsigkey!=null && $z->tsigkey!=""
 			);
 		}
-
 		return \Response::json( $ret);
 
 	}
@@ -51,13 +42,11 @@ class ZoneController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function getIndex()
-	{
+	public function getIndex(){
 			return $this->getAllZones();
 	}
 
-	public function getGet()
-	{
+	public function getGet(){
 		$zone=\Auth::user()->zone(\Input::get("id"));
 		$ret=array(
 			'id' => $zone->id,
@@ -92,7 +81,6 @@ class ZoneController extends Controller {
 		}else{
 			abort(401);
 		}
-
 	}
 
 	public function postSave(){
@@ -116,17 +104,16 @@ class ZoneController extends Controller {
 		if(isset($data["tsigkey"]) && $data["tsigkey"]!=""){
 			$data["tsigkey"]=\Crypt::encrypt($data["tsigkey"]);
 		}
-		//var_dump($data);
 		if(\Input::has('id')){
 			$zone = \App\Zone::find(\Input::get("id"));
-			$zone->update($data);//$zone->name = \Input::get("name");
+			$zone->update($data);
 		}else{
-
 			$zone = \App\Zone::create($data);
 		}
 
 		return $this->getAllZones();
 	}
+
 	public function postRemove(){
 		if(\Auth::user()->role!="admin"){
 			abort(401);
@@ -140,13 +127,10 @@ class ZoneController extends Controller {
 		$zone=\Auth::user()->zone(\Input::get("zid"));
 		if($zone!=null){
 			//TODO validate input
-
 			$records = $zone->removeRecord(\Input::all());
 			return \Response::json( $records);
 		}else{
 			abort(401);
 		}
-
 	}
-
 }

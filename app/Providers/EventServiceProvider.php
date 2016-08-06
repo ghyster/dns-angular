@@ -43,7 +43,20 @@ class EventServiceProvider extends ServiceProvider {
 	    	if($laravelUser!=null){
 	    		Auth::login($laravelUser);
 	    	}else{
-	    		
+	    		//if first user then create it and login
+	    		$count=\App\User::all()->count();
+	    		if($count==0){
+	    			$data=array();
+	    			$data['lastname']="";
+	    			$data['firstname']="";
+	    			$data['username']=$user->getUserId();
+	    			$data['role']="admin";
+	    			$user=\App\User::create($data);
+	    			\Auth::login($user);
+	    			return \Redirect::to('/');
+	    		}else{
+	        		abort(401);
+	    		}	
 	    	}
              
              //if it does not exist create it and go on  or show an error message

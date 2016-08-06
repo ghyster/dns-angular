@@ -65,7 +65,7 @@ class LoginController extends Controller {
     	$ouser = $oauth2->userinfo->get();
     	$user=\App\User::where("username","=",$ouser["email"])->get()->first();
     	if($user!=null){
-      		\Auth::login($user/*,true*/);	    	
+      		\Auth::login($user/*,true*/);
 	    	return \Redirect::to('/');
     	}else{
     		//if first user then create it and login
@@ -81,7 +81,7 @@ class LoginController extends Controller {
     			return \Redirect::to('/');
     		}else{
         		abort(401);
-    		}	
+    		}
 
     		//we register the non existing user
     		//var_dump($ouser);
@@ -125,7 +125,8 @@ class LoginController extends Controller {
 
     public function getLogout(){
     	\Auth::logout();
-    	return \Redirect::to('/');
+			return \View::make('login.logout');
+    	//return \Redirect::to('/');
     }
 
 }

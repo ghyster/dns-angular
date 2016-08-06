@@ -72,7 +72,7 @@ h1 {
 }
 .main-menu > li > a > i {
 	padding-top:4px;
-}	
+}
 
 .main-menu {
     list-style: none;
@@ -121,25 +121,36 @@ a:hover{
 .md-light { color: rgba(255, 255, 255, 1); }
 .md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
 
-md-data-table-toolbar.ng-hide {
+md-toolbar.md-table-toolbar.ng-hide {
   display: none;
 }
-md-data-table-toolbar.alternate {
+md-toolbar.md-table-toolbar.alternate .md-toolbar-tools {
   color: #1e88e5;
+  font-size: 16px;
   background-color: #e3f2fd;
 }
-md-data-table-toolbar > .md-button.md-icon-button:last-child {
-  margin-right: -12px;
-}
-md-data-table-toolbar > form {
+md-toolbar.md-table-toolbar form {
   margin-left: 16px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
-md-data-table-toolbar > form > input {
+md-toolbar.md-table-toolbar form > input {
   width: 100%;
   margin: 0;
   border: none;
   color: rgba(0, 0, 0, 0.87);
 }
-md-data-table-toolbar > form > input:focus {
+md-toolbar.md-table-toolbar form > input:focus {
   outline: none;
+}
+
+md-table-container table td .md-button.md-icon-button{
+  margin:0;
+  padding:0;
+  width: 32px;
+  height: 32px;
+}
+
+md-list-item{
+  height: 2em;
 }

@@ -1,64 +1,62 @@
 <div layout="column" ng-controller="zoneCtrl">
 <md-card>
-      <md-card-content>
-      	        
-        <md-data-table-toolbar ng-hide="filter.show">
-		  <h2 class="md-title">{{zone.name}}</h2>
-		  
-		  <div flex></div>
-		  
-		  <md-button class="md-icon-button" ng-click="createRecord()">
-		    <i class="material-icons md-dark">add_circle_outline</i>
-		  </md-button>
-		  <md-button class="md-icon-button" ng-click="filter.show = true">
-		    <i class="material-icons md-dark">search</i>
-		  </md-button>
-		  
-		</md-data-table-toolbar>
-				
-		<md-data-table-toolbar ng-show="filter.show">
-		  <i class="material-icons md-dark">search</i>
-		  <form flex name="filter.form">
-		    <input type="text" ng-model="query.filter" ng-model-options="filter.options" placeholder="search">
-		  </form>
-		  <md-button class="md-icon-button" ng-click="removeFilter()">
-		    <i class="material-icons md-dark">close</i>
-		  </md-button>
-		</md-data-table-toolbar>
-        
-        <md-data-table-container>
-		  <table md-data-table md-progress="deferred">
-		    <thead md-order="name" md-trigger="onOrderChange">
-		      <tr>
-		      	<th style="width:80px;padding:0;"></th>
-		        <th name="Record name" descend-first order-by="name" style="width:220px"></th>
-		        <th name="Record type" order-by="type" style="width:50px"></th>
-		        <th name="TTL" order-by="ttl" style="width:50px"></th>
-		        <th name="Record value" order-by="rdata"></th>        
+  <md-card-content>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="filter.show">
+      <div class="md-toolbar-tools">
+        <h2 class="md-title">{{zone.name}}</h2>
+        <div flex></div>
+
+        <md-button class="md-icon-button" ng-click="createRecord()">
+  		    <i class="material-icons md-dark">add_circle_outline</i>
+        </md-button>
+        <md-button class="md-icon-button" ng-click="filter.show = true">
+          <i class="material-icons md-dark">search</i>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-toolbar class="md-table-toolbar md-default" ng-show="filter.show">
+      <div class="md-toolbar-tools">
+        <i class="material-icons md-dark">search</i>
+        <form flex name="filter.form">
+          <input type="text" ng-model="query.filter" ng-model-options="filter.options" placeholder="search">
+        </form>
+        <md-button class="md-icon-button" ng-click="removeFilter()">
+          <i class="material-icons md-dark">close</i>
+        </md-button>
+      </div>
+		</md-toolbar>
+
+    <md-table-container>
+		  <table md-table md-progress="deferred">
+		    <thead md-head md-order="name" md-trigger="onOrderChange">
+		      <tr md-row>
+		      	<th md-column style="width:80px;padding:0;"></th>
+		        <th md-column descend-first order-by="name" style="width:220px">Record name</th>
+            <th md-column order-by="type" style="width:50px">Record type</th>
+		        <th md-column order-by="ttl" style="width:50px">TTL</th>
+		        <th md-column order-by="rdata">Record value</th>
 		      </tr>
 		    </thead>
-		    <tbody>
-		      <tr ng-repeat="record in zone.records | orderBy: name" md-disable-select="true">
-		        <td style="width:80px;padding:0;"><md-button style="margin:0;" class="md-icon-button" ng-click="update(record)">
-				    <i class="material-icons md-18 md-dark">create</i>
-				  </md-button><md-button style="margin:0;" class="md-icon-button" ng-click="remove(record)">
-				    <i class="material-icons md-18 md-dark">delete</i>
-				  </md-button>
-				</td>
-		        <td>{{record.name}}</td>
-		        <td>{{record.type}}</td>
-		        <td>{{record.ttl}}</td>
-		        <td>{{record.rdata}}</td>
-		
+		    <tbody md-body>
+		      <tr md-row ng-repeat="record in zone.records | orderBy: name|  limitTo: qLimit: (qPage - 1) * qLimit" md-disable-select="true">
+		        <td md-cell style="width:70px;padding:0;">
+              <md-button class="md-icon-button" ng-click="update(record)">
+                <i class="material-icons md-18 md-dark">create</i>
+				      </md-button>
+              <md-button class="md-icon-button" ng-click="remove(record)">
+                <i class="material-icons md-18 md-dark">delete</i>
+              </md-button>
+            </td>
+		        <td md-cell>{{record.name}}</td>
+		        <td md-cell>{{record.type}}</td>
+		        <td md-cell>{{record.ttl}}</td>
+		        <td md-cell>{{record.rdata}}</td>
 		      </tr>
 		    </tbody>
 		  </table>
-		</md-data-table-container>
-	  </md-card-content>  
+		</md-table-container>
+    <md-table-pagination md-limit="qLimit" md-page="qPage" md-total="{{zone.records.length}}"></md-table-pagination>
+  </md-card-content>
 </md-card>
-
-
-
-
-
 </div>

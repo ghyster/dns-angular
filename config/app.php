@@ -214,10 +214,16 @@ return [
 		'Gate' => 'Illuminate\Support\Facades\Gate',
 	],
 
-	'dnsservers'=> [env('DNS_SERVER')],
+	'dnsservers' => [env('DNS_SERVER')],
+  'dnslog' => env('DNS_LOG'),
+  'dnsautoreverse' => env('DNS_AUTO_REVERSE'),
+
 	'authtype' => env('AUTH_TYPE'), //choose between saml, google
 	'google_client_id' => env('GOOGLE_CLIENT_ID'),
 	'google_client_secret' => env('GOOGLE_CLIENT_SECRET'),
   'google_application_name' => env('GOOGLE_APPLICATION_NAME'),
 	'google_redirect_uri' => env('GOOGLE_REDIRECT_URI'),
+
+  'theme' => env('APP_THEME'),
+
 ];

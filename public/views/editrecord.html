@@ -19,7 +19,7 @@
 	          <div ng-messages="recordForm.rdata.$error">
 		          <div ng-message="dnsrecordvalue">
 		          <span ng-show="record.type=='CNAME'">A FQDN is expected.</span>
-              <span ng-show="record.type=='PTR'">A FQDN is expected.</span>		          
+              <span ng-show="record.type=='PTR'">A FQDN is expected.</span>
 		          <span ng-show="record.type=='A'">An IPV4 address is expected.</span>
 		          </div>
 		      </div>
@@ -33,13 +33,13 @@
     </div>
     </form>
   </md-dialog-content>
-  <div class="md-actions" layout="row">
+  <md-dialog-actions>
     <md-button class="md-icon-button" ng-click="cancel()">
      <i class="material-icons md-dark">close</i>
     </md-button>
     <md-button class="md-icon-button" ng-click="save()">
      <i class="material-icons md-dark">save</i>
     </md-button>
-  </div>
+  </md-dialog-actions>
 
 </md-dialog>

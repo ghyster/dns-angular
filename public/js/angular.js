@@ -48,7 +48,7 @@ dns.controller('dnsCtrl', ['$scope', '$mdSidenav','zoneService', function($scope
 	  });
 
 	  $scope.disconnect = function(){
-		  document.location="/login/googlelogout";
+		  document.location="/login/logout";
 	  };
 
 	  zoneService.getZones();
@@ -59,15 +59,18 @@ dns.controller('zoneCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', 'z
 	  $scope.zone = zoneService.getZone($stateParams.id);
 	  $scope.records=null;
 	  $scope.filter = {
-	    options: {
-			 debounce: 500
-		}
+      options: {
+        debounce: 500
+      }
 	  };
 
 	  $scope.query = {
 			  filter: '',
 			  order: 'name'
 	  };
+
+    $scope.qLimit = 20;
+    $scope.qPage = 1;
 
 	  function DialogController($scope, $mdDialog, record,zone) {
       //console.log(zone.reverse);

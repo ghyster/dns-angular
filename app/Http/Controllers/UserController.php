@@ -4,7 +4,7 @@ class UserController extends Controller {
 
 	/*
 	|--------------------------------------------------------------------------
-	| Zone Controller
+	| User Controller
 	|--------------------------------------------------------------------------
 	|
 	|
@@ -16,8 +16,7 @@ class UserController extends Controller {
 	 *
 	 * @return void
 	 */
-	public function __construct()
-	{
+	public function __construct(){
 		$this->middleware('auth');
 		if(\Auth::user()->role!="admin"){
 			abort(401);
@@ -28,15 +27,11 @@ class UserController extends Controller {
 		$users=\App\User::all();
 
 		$ret=array();
-		//$zones=[];
 		foreach($users as $z){
 			$uzones=[];
 			if($z->role!="admin"){
-				$zones=$z->zones()->get();
-				//var_dump($zones);
-				
+				$zones=$z->zones();
 				foreach($zones as $zo){
-					//echo $zo->id;
 					$uzones[]=array(
 					"id" => $zo->id,
 					"name" => $zo->name
@@ -53,9 +48,7 @@ class UserController extends Controller {
 				"zones" => $uzones
 			);
 		}
-
 		return \Response::json( $ret);
-
 	}
 
 	/**
@@ -70,36 +63,32 @@ class UserController extends Controller {
 	public function postSave(){
 
 		$data = \Input::all();
-		
 		$validator = \Validator::make(
 				$data,
 				[
 						'username' => 'required'
 				]
 		);
+
 		if ($validator->fails()){
 			// The given data did not pass validation
 			abort(400);
 		}
+
 		if(\Input::has('id')){
 			$user = \App\User::find(\Input::get("id"));
-			$user->update($data);//$zone->name = \Input::get("name");
+			$user->update($data);
 		}else{
-
 			$user = \App\User::create($data);
 		}
-		
+
 		$user->syncZones(\Input::get("zones"));
-		
-		
+
 		return $this->getAllUsers();
 	}
 	public function postRemove(){
-
 		\App\User::destroy(\Input::get("id"));
-
 		return $this->getAllUsers();
-
 	}
 
 }

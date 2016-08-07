@@ -217,6 +217,7 @@ return [
 	'dnsservers' => [env('DNS_SERVER')],
   'dnslog' => env('DNS_LOG'),
   'dnsautoreverse' => env('DNS_AUTO_REVERSE'),
+  'dnsttl' => env('DNS_TTL'),
 
 	'authtype' => env('AUTH_TYPE'), //choose between saml, google
 	'google_client_id' => env('GOOGLE_CLIENT_ID'),

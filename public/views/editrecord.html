@@ -21,6 +21,8 @@
 		          <span ng-show="record.type=='CNAME'">A FQDN is expected.</span>
               <span ng-show="record.type=='PTR'">A FQDN is expected.</span>
 		          <span ng-show="record.type=='A'">An IPV4 address is expected.</span>
+              <span ng-show="record.type=='AAAA'"> An IPV6 address is expected.</span>
+              <span ng-show="record.type=='TXT'">Value cannot exceeds 255 chars or contains quotes.</span>
 		          </div>
 		      </div>
 	      </md-input-container>

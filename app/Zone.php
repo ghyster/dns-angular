@@ -28,7 +28,7 @@ class Zone extends Model {
 		foreach($rdata as $r){
 			if($r->type!="SOA" && $r->type!="NS"){
 				$ret[]=array(
-						"name" => str_replace(".".$this->name,"",$r->name),
+						"name" => ($r->name!=$this->name) ? str_replace(".".$this->name,"",$r->name) : "",
 						"ttl" => $r->ttl,
 						"class" => $r->class,
 						"type" => $r->type,

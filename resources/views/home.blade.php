@@ -6,7 +6,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/css/md-data-table.min.css" type="text/css" />
     <link rel="stylesheet" href="/css/app.css" type="text/css" />
-    <link rel="stylesheet" href="/css/{{ \Config::get('app.theme') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ \Config::get('app.theme') }}" type="text/css" />
     <meta name="viewport" content="initial-scale=1" />
   </head>
   <body layout="column" ng-controller="dnsCtrl">
@@ -75,16 +75,19 @@
         </div>
     </div>
     <!-- Angular Material Dependencies -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.min.js"></script>
+	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-messages.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
     <script src="/js/angular-ui-router.min.js"></script>
     <script src="/js/ocLazyLoad.min.js"></script>
     <script src="/js/md-data-table.min.js"></script>
 
-
+    <script type="text/javascript">
+      DNS_TTL = {{ \Config::get('app.dnsttl') }};
+    </script>
    	<script src="/js/angular.js"></script>
   </body>
 </html>

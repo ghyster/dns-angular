@@ -66,7 +66,7 @@ class ZoneController extends Controller {
 			$validator = \Validator::make(
 				\Input::all(),
 				[
-					'name' => 'required',
+					/*'name' => 'required',*/
 					'ttl' => 'required',
 					'type' => 'required',
 					'rdata'	 => 'required'

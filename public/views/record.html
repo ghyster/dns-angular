@@ -14,26 +14,29 @@
 	    <div layout="row" layout-sm="column">
 	      <md-input-container flex>
 	          <label>Name</label>
-	          <input required name="name" ng-model="record.name" ng-pattern="/^[a-zA-Z0-9][a-zA-Z0-9-\.]+[a-zA-Z0-9]$/" />
+	          <input name="name" ng-model="record.name" ng-pattern="/^[a-zA-Z0-9][a-zA-Z0-9-\.]+[a-zA-Z0-9]$/" />
 	          <div ng-messages="recordForm.name.$error">
 		          <div ng-message-exp="['required', 'pattern']">An alphanumeric string is expected</div>
 		      </div>
 	      </md-input-container>
 
-	      <md-select ng-model="record.type" flex="20">
+	      <md-select style="margin-top: 0;margin-bottom: 44px;" ng-model="record.type" aria-label="Record type" placeholder="Type" flex="20">
 	         <md-option ng-value="type" ng-repeat="type in recordtypes">{{ type }}</md-option>
-		  </md-select>
+		    </md-select>
 	    </div>
 	    <div layout="row" layout-sm="column">
 	      <md-input-container flex >
-	          <label>Value</label>
-	          <input dnsrecordvalue name="rdata" ng-model="record.rdata" />
-	          <div ng-messages="recordForm.rdata.$error">
-		          <div ng-message="dnsrecordvalue">This value is invalid.
+	        <label>Value</label>
+	        <input dnsrecordvalue name="rdata" ng-model="record.rdata" />
+
+	        <div ng-messages="recordForm.rdata.$error">
+		        <div ng-message="dnsrecordvalue">This value is invalid.
               <span ng-show="record.type=='PTR'"> A FQDN is expected.</span>
 		          <span ng-show="record.type=='CNAME'"> A FQDN is expected.</span>
 		          <span ng-show="record.type=='A'"> An IPV4 address is expected.</span>
-		          </div>
+              <span ng-show="record.type=='AAAA'"> An IPV6 address is expected.</span>
+              <span ng-show="record.type=='TXT'">Value cannot exceeds 255 chars or contains quotes.</span>
+		        </div>
 		      </div>
 	      </md-input-container>
 

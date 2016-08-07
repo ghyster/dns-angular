@@ -93,10 +93,21 @@ class Dns {
 		$updater = new \Net_DNS2_Updater($zone->name,array('nameservers' => $this->servers, 'cache_type' => 'none', 'recurse' => false));
 		//TODO check if record type is authorized ?
 		try {
+			$rname=(isset($data["name"]) && $data["name"]!="") ? $data["name"].'.'.$zone->name : $zone->name;
+			$rvalue=$data["rdata"];
+			if($data["type"]=="TXT"){
+				if(substr($rvalue,0,1)!='"'){
+					$rvalue='"'.$rvalue;
+				}
+				if(substr($rvalue,-1)!='"'){
+					$rvalue=$rvalue.'"';
+				}
+			}
+			//dd($rvalue);
 			//if record update, we delete the previous one
 			if(array_key_exists("ori", $data)){
 				$ori=$data["ori"];
-				$orirecord=\Net_DNS2_RR::fromString($ori["name"].'.'.$zone->name.' '.$ori["ttl"].' '.$ori["type"].' '.$ori["rdata"]);
+				$orirecord=\Net_DNS2_RR::fromString($rname.' '.$ori["ttl"].' '.$ori["type"].' '.$ori["rdata"]);
 				$updater->delete($orirecord);
 				if($this->loggingenable()){\Log::info(\Auth::user()->username.' DELETE '.$orirecord);}
 
@@ -115,16 +126,17 @@ class Dns {
 					}
 				}
 			}
-			$record=\Net_DNS2_RR::fromString($data["name"].'.'.$zone->name.' '.$data["ttl"].' '.$data["type"].' '.$data["rdata"]);
+
+			$record=\Net_DNS2_RR::fromString($rname.' '.$data["ttl"].' '.$data["type"].' '.$rvalue);
 			$updater->add($record);
 			$updater->signTSIG(\Crypt::decrypt($zone->tsigname),\Crypt::decrypt($zone->tsigkey));
 			$updater->update();
 			if($this->loggingenable()){\Log::info(\Auth::user()->username.' CREATE '.$record);}
 			// create reverse record if authoritative
-			if($this->managereverse()){
-				$zonerev=$this->canAddPTR($zone, $data["rdata"]);
-				if($data["type"]=="A" && $zonerev!=null){
-					$revrecord=\Net_DNS2_RR::fromString($this->getReverseIP($data["rdata"]).'.in-addr.arpa '.$data["ttl"].' PTR '.$data["name"].'.'.$zone->name);
+			if($data["type"]=="A" && $this->managereverse()){
+				$zonerev=$this->canAddPTR($zone, $rvalue);
+				if($zonerev!=null){
+					$revrecord=\Net_DNS2_RR::fromString($this->getReverseIP($rvalue).'.in-addr.arpa '.$data["ttl"].' PTR '.$rname);
 					$updaterrev = new \Net_DNS2_Updater($zonerev->name,array('nameservers' => $this->servers, 'cache_type' => 'none', 'recurse' => false));
 					$updaterrev->add($revrecord);
 					$updaterrev->signTSIG(\Crypt::decrypt($zonerev->tsigname),\Crypt::decrypt($zonerev->tsigkey));

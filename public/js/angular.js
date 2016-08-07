@@ -1,6 +1,7 @@
 var dns = angular.module('dns', [
 'md.data.table',
 'ngMaterial',
+'ngMessages',
 'ui.router',
 'ngResource',
 'oc.lazyLoad'
@@ -73,16 +74,13 @@ dns.controller('zoneCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', 'z
     $scope.qPage = 1;
 
 	  function DialogController($scope, $mdDialog, record,zone) {
-      //console.log(zone.reverse);
+
       if(zone.reverse!=1){
-		      $scope.recordtypes=['A','CNAME'];
+		      $scope.recordtypes=['A','AAAA','CNAME', 'TXT'];
       }else{
           $scope.recordtypes=['PTR'];
       }
 		  $scope.cancel = function() {
-			  //$scope.recordForm.$setPristine();
-			  //$scope.recordForm.rdata = $scope.orirecord.rdata;
-			  //console.log($scope.record,$scope.orirecord);
 			  $mdDialog.cancel();
 		  };
 
@@ -169,7 +167,7 @@ dns.controller('zoneCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', 'z
 		      templateUrl: 'views/record.html',
 		      locals: {
 		          record: {
-		        	  ttl: 86400,
+		        	  ttl: DNS_TTL,
 		        	  zid: $scope.zone.id
 		          },
 	              zone: $scope.zone
@@ -576,10 +574,18 @@ dns.directive('dnsrecordvalue',function(){
 	                    	//console.log(viewValue.match(/\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/));
 	                        var m=viewValue.match(/\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/);
 	                    	return m!=null;
-                    	}else if(scope.record.type=='CNAME' || scope.record.type=='PTR'){
+                    	}else if(scope.record.type=='AAAA'){
+                        var m=viewValue.match(/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$|^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/);
+                        return m!=null;
+                      }else if(scope.record.type=='CNAME' || scope.record.type=='PTR'){
                     		var m=viewValue.match(/(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z\.]{2,})$)/);
                     		return m!=null;
-                    	}else{
+                    	}else if(scope.record.type=='TXT'){
+                        if (viewValue.indexOf('"')!=-1){
+                          return false;
+                        }
+                        return viewValue.length < 255;
+                      }else{
                     		return false;
                     	}
                     }

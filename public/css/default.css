@@ -1,6 +1,10 @@
 #logo{
+  /*
+  sample settings to set a logo
+  use the public/custom folder to put you css files and resources, this folder is not versioned
+  
   width: 115px;
   height: 64px;
-  background-image: url("../images/logo.png");
+  background-image: url("logo.png");*/
 
 }

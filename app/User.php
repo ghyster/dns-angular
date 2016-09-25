@@ -57,7 +57,7 @@ class User extends Model implements AuthenticatableContract {
 			foreach($zones as $zone){
 				$newids[]=$zone["id"];
 			}
-			$this->uzones()->sync($newids);
+			$this->belongsToMany('App\Zone', 'user_zone','user', 'zone')->sync($newids);
 		}
 	}
 

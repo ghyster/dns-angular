@@ -14,7 +14,7 @@
 	    <div layout="row" layout-sm="column">
 	      <md-input-container flex>
 	          <label>Name</label>
-	          <input name="name" ng-model="record.name" ng-pattern="/^[a-zA-Z0-9][a-zA-Z0-9-\.]+[a-zA-Z0-9]$/" />
+	          <input name="name" ng-model="record.name" ng-pattern="/^[a-zA-Z0-9-\*][a-zA-Z0-9-\.]+[a-zA-Z0-9]$/" />
 	          <div ng-messages="recordForm.name.$error">
 		          <div ng-message-exp="['required', 'pattern']">An alphanumeric string is expected</div>
 		      </div>

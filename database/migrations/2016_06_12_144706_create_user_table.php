@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateUserTable extends Migration
 {
@@ -17,7 +17,7 @@ class CreateUserTable extends Migration
             $table->string('username')->unique();
             $table->string('lastname')->nullable()->default(null);
             $table->string('firstname')->nullable()->default(null);
-            $table->string('role',20)->default('user');
+            $table->string('role', 20)->default('user');
             $table->timestamps();
         });
     }

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateUserZoneTable extends Migration
 {
@@ -13,13 +13,13 @@ class CreateUserZoneTable extends Migration
     public function up()
     {
         Schema::create('user_zone', function (Blueprint $table) {
-          $table->integer('user')->unsigned();
-          $table->integer('zone')->unsigned();
+            $table->integer('user')->unsigned();
+            $table->integer('zone')->unsigned();
 
-          $table->foreign('user')->references('id')->on('user')->onDelete('cascade');
-          $table->foreign('zone')->references('id')->on('zone')->onDelete('cascade');
+            $table->foreign('user')->references('id')->on('user')->onDelete('cascade');
+            $table->foreign('zone')->references('id')->on('zone')->onDelete('cascade');
 
-          $table->primary(['user', 'zone']);
+            $table->primary(['user', 'zone']);
         });
     }
 

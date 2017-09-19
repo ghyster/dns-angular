@@ -11,11 +11,10 @@
 |
 */
 
-
 Route::get('/', 'HomeController@index');
 
 Route::controllers([
-	'zone'	=> 'ZoneController',
-	'user'	=> 'UserController',
-	'login'	=> 'LoginController'
+    'zone'     => 'ZoneController',
+    'user'     => 'UserController',
+    'login'    => 'LoginController',
 ]);

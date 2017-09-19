@@ -76,7 +76,7 @@ dns.controller('zoneCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', 'z
 	  function DialogController($scope, $mdDialog, record,zone) {
 
       if(zone.reverse!=1){
-		      $scope.recordtypes=['A','AAAA','CNAME', 'TXT'];
+		      $scope.recordtypes=['A', 'AAAA', 'CAA', 'CNAME', 'MX', 'SRV', 'TXT'];
       }else{
           $scope.recordtypes=['PTR'];
       }
@@ -194,6 +194,7 @@ dns.controller('zonesCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', '
 		     //console.log(data);
 		     $scope.mzones = data;
 	  });
+
     zoneService.getZones();
 	  $scope.records=null;
 	  $scope.filter = {
@@ -220,7 +221,7 @@ dns.controller('zonesCtrl', ['$scope', '$stateParams', '$filter', '$mdDialog', '
 			  $mdDialog.hide();
 		  };
 		  $scope.zone=zone;
-
+      $scope.zonealgo=['hmac-md5.sig-alg.reg.int','hmac-sha1','hmac-sha256', 'hmac-sha512'];
 		  $scope.orizone = angular.copy(zone);
 
 		  $scope.save = function() {
@@ -502,7 +503,21 @@ dns.service('zoneService', ['$resource', '$http', '$rootScope', function($resour
 	}
 
 	this.removeRecord = function(record, zone){
-		$http.post('/zone/removerecord',  {name: record.name, type: record.type, ttl: record.ttl, rdata: record.rdata, zid: zone.id})
+    var rdata={name: record.name, type: record.type, ttl: record.ttl, rdata: record.rdata, zid: zone.id};
+    if(record.type=='SRV'){
+      rdata.priority=record.priority;
+      rdata.weight=record.weight;
+      rdata.port=record.port;
+    }
+    if(record.type=='MX'){
+      rdata.priority=record.priority;
+    }
+    if(record.type=='CAA'){
+      rdata.flag=record.flag;
+      rdata.tag=record.tag;
+    }
+
+		$http.post('/zone/removerecord',  rdata)
 		  .then(function successCallback(response) {
 			    zone.records = response.data;
 		  }, function errorCallback(response) {
@@ -577,9 +592,16 @@ dns.directive('dnsrecordvalue',function(){
                     	}else if(scope.record.type=='AAAA'){
                         var m=viewValue.match(/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$|^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/);
                         return m!=null;
-                      }else if(scope.record.type=='CNAME' || scope.record.type=='PTR'){
+                      }else if(scope.record.type=='CNAME' || scope.record.type=='PTR' || scope.record.type=='SRV' || scope.record.type=='MX'){
                     		var m=viewValue.match(/(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z\.]{2,})$)/);
                     		return m!=null;
+                      }else if(scope.record.type=='CAA'){
+                        if(scope.record.tag=='iodef'){
+                          var m=viewValue.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/);
+                        }else{
+                          var m=viewValue.match(/(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z\.]{2,})$)/);
+                        }
+                        return m!=null;
                     	}else if(scope.record.type=='TXT'){
                         if (viewValue.indexOf('"')!=-1){
                           return false;

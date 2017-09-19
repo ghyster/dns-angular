@@ -26,13 +26,13 @@ class EventServiceProvider extends ServiceProvider {
 	 * @param  \Illuminate\Contracts\Events\Dispatcher  $events
 	 * @return void
 	 */
-	public function boot(DispatcherContract $events)
+	public function boot()
 	{
-		parent::boot($events);
-		
+		parent::boot();
+
 		Event::listen('Aacotroneo\Saml2\Events\Saml2LoginEvent', function (Saml2LoginEvent $event) {
-			
-			
+
+
             $user = $event->getSaml2User();
             /*$userData = [
                 'id' => $user->getUserId(),
@@ -56,11 +56,11 @@ class EventServiceProvider extends ServiceProvider {
 	    			return \Redirect::to('/');
 	    		}else{
 	        		abort(401);
-	    		}	
+	    		}
 	    	}
-             
+
              //if it does not exist create it and go on  or show an error message
-             
+
         });
 	}
 

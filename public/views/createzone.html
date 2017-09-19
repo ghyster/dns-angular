@@ -19,12 +19,17 @@
 
 	      </md-input-container>
         <md-input-container flex >
+	          <label>DNS Server</label>
+	          <input name="server" ng-model="zone.server" />
+
+	      </md-input-container>
+        <md-input-container flex >
           <md-checkbox ng-model="zone.reverse" ng-true-value="1" ng-false-value="0" aria-label="Reverse zone">
   	          Reverse zone
   	        </md-checkbox>
         </md-input-container>
-        </div>
-        <div layout="row" layout-sm="column">
+      </div>
+      <div layout="row" layout-sm="column">
 	      <md-input-container flex >
 	          <label>TSIG key name</label>
 	          <input name="tsigname" ng-model="zone.tsigname" />
@@ -35,8 +40,11 @@
 	          <input name="tsigkey" ng-model="zone.tsigkey" />
 
 	      </md-input-container>
-        </div>
 
+        <md-select style="margin-top: 0;" ng-model="zone.tsigalgo" aria-label="TSIG algorithm" placeholder="TSIG algorithm" flex="20">
+    	     <md-option ng-value="algo" ng-repeat="algo in zonealgo">{{ algo }}</md-option>
+    		</md-select>
+      </div>
     </div>
     </form>
   </md-dialog-content>

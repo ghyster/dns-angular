@@ -18,11 +18,13 @@
 	          <input dnsrecordvalue name="rdata" ng-model="record.rdata" />
 	          <div ng-messages="recordForm.rdata.$error">
 		          <div ng-message="dnsrecordvalue">
-		          <span ng-show="record.type=='CNAME'">A FQDN is expected.</span>
-              <span ng-show="record.type=='PTR'">A FQDN is expected.</span>
-		          <span ng-show="record.type=='A'">An IPV4 address is expected.</span>
-              <span ng-show="record.type=='AAAA'"> An IPV6 address is expected.</span>
-              <span ng-show="record.type=='TXT'">Value cannot exceeds 255 chars or contains quotes.</span>
+                <span ng-show="record.type=='PTR'"> A FQDN is expected.</span>
+                <span ng-show="record.type=='MX'"> A FQDN is expected.</span>
+  		          <span ng-show="record.type=='CNAME'"> A FQDN is expected.</span>
+                <span ng-show="record.type=='SRV'"> A FQDN is expected.</span>
+  		          <span ng-show="record.type=='A'"> An IPV4 address is expected.</span>
+                <span ng-show="record.type=='AAAA'"> An IPV6 address is expected.</span>
+                <span ng-show="record.type=='TXT'">Value cannot exceeds 255 chars or contains quotes.</span>
 		          </div>
 		      </div>
 	      </md-input-container>
@@ -31,6 +33,49 @@
 	          <label>TTL</label>
 	          <input type="number" min="0" max="86400" ng-model="record.ttl" />
 	      </md-input-container>
+        </div>
+
+        <div layout="row" layout-sm="column" ng-show="record.type=='SRV' || record.type=='MX'">
+
+          <md-input-container flex>
+  	          <label>Priority</label>
+  	          <input type="number" min="0" max="65535" name="priority" ng-model="record.priority" />
+  	      </md-input-container>
+
+  	      <md-input-container flex ng-hide="record.type=='MX'">
+  	        <label>Weight</label>
+  	        <input type="number" min="0" max="65535" name="weight" ng-model="record.weight" />
+  	      </md-input-container>
+
+          <md-input-container flex ng-hide="record.type=='MX'">
+  	          <label>Port</label>
+  	          <input name="port" type="number" min="0" max="65535" ng-model="record.port"  />
+  	      </md-input-container>
+
+        </div>
+
+        <div layout="row" layout-sm="column" ng-show="record.type=='CAA'">
+  	      <md-input-container flex >
+  	        <label>Flag</label>
+  	        <input name="flag" type="number" min="0" max="65535" ng-model="record.flag" />
+  	      </md-input-container>
+
+          <md-select style="margin-top: 0;margin-bottom: 44px;" ng-model="record.tag" aria-label="Record tag" placeholder="Tag" flex="40">
+  	         <md-option value="issue">issue</md-option>
+             <md-option value="issuewild">issuewild</md-option>
+             <md-option value="iodef">iodef</md-option>
+  		    </md-select>
+
+        </div>
+
+        <div layout="row" layout-sm="column" ng-show="record.type=='SRV'">
+          generated record : {{ record.name ? record.name+'.' : '' }}{{ zone.name }} {{ record.ttl }} IN SRV {{ record.priority }} {{ record.weight }} {{ record.port }} {{ record.rdata }}
+        </div>
+        <div layout="row" layout-sm="column" ng-show="record.type=='MX'">
+          generated record : {{ record.name ? record.name+'.' : '' }}{{ zone.name }} {{ record.ttl }} IN MX {{ record.priority }} {{ record.rdata }}
+        </div>
+        <div layout="row" layout-sm="column" ng-show="record.type=='CAA'">
+          generated record : {{ record.name ? record.name+'.' : '' }}{{ zone.name }} {{ record.ttl }} IN CAA {{ record.flag }} {{ record.tag }} "{{ record.tag=='iodef' ? 'mailto:' : '' }}{{ record.rdata }}"
         </div>
     </div>
     </form>

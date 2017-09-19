@@ -51,7 +51,7 @@
 		        <td md-cell>{{record.name}}</td>
 		        <td md-cell>{{record.type}}</td>
 		        <td md-cell>{{record.ttl}}</td>
-		        <td md-cell>{{record.rdata}}</td>
+		        <td md-cell>{{ record.type=='CAA' ? record.flag+' '+record.tag+' ' : ''}}{{ record.type=='MX' ? record.priority+' ' : ''}}{{ record.type=='SRV' ? record.priority+' '+record.weight+' '+record.port+' ' : ''}}{{record.type=='CAA' ? (record.tag=='iodef' ? '"mailto:'+record.rdata+'"' : '"'+record.rdata+'"') : record.rdata}}</td>
 		      </tr>
 		    </tbody>
 		  </table>

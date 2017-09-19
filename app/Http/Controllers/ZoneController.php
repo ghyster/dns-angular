@@ -20,7 +20,7 @@ class ZoneController extends Controller {
 		$this->middleware('auth');
 	}
 
-	private function getAllZones(){
+	public function getAllZones(){
 
 		$zones=\Auth::user()->zones();
 		$ret=array();
@@ -28,9 +28,11 @@ class ZoneController extends Controller {
 			$ret[]=array(
 			"id" => $z->id,
 			"name" => $z->name,
+			"server" => $z->server,
 			"reverse" => $z->reverse,
 			"hastsigname" => $z->tsigname!=null && $z->tsigname!="",
-		    "hastsigkey" => $z->tsigkey!=null && $z->tsigkey!=""
+		  "hastsigkey" => $z->tsigkey!=null && $z->tsigkey!="",
+			"hastsigalgo" => $z->tsigalgo!=null && $z->tsigalgo!=""
 			);
 		}
 		return \Response::json( $ret);
@@ -42,15 +44,16 @@ class ZoneController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function getIndex(){
+	/*public function index(){
 			return $this->getAllZones();
-	}
+	}*/
 
-	public function getGet(){
+	public function get(){
 		$zone=\Auth::user()->zone(\Input::get("id"));
 		$ret=array(
 			'id' => $zone->id,
 			'name' => $zone->name,
+			"server" => $zone->server,
 			'reverse' => $zone->reverse,
 			'records' => $zone->getRecords()
 		);
@@ -104,6 +107,10 @@ class ZoneController extends Controller {
 		if(isset($data["tsigkey"]) && $data["tsigkey"]!=""){
 			$data["tsigkey"]=\Crypt::encrypt($data["tsigkey"]);
 		}
+		if(isset($data["tsigalgo"]) && $data["tsigalgo"]!=""){
+			$data["tsigalgo"]=\Crypt::encrypt($data["tsigalgo"]);
+		}
+
 		if(\Input::has('id')){
 			$zone = \App\Zone::find(\Input::get("id"));
 			$zone->update($data);

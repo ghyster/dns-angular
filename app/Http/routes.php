@@ -14,8 +14,24 @@
 
 Route::get('/', 'HomeController@index');
 
-Route::controllers([
+
+Route::get('/login/google', 'LoginController@google');
+Route::post('/login/google', 'LoginController@postGoogle');
+Route::post('/login/logout', 'LoginController@logout');
+
+Route::get('/zone', 'ZoneController@getAllZones');
+Route::post('/zone/save', 'ZoneController@postSave');
+Route::post('/zone/record', 'ZoneController@postRecord');
+Route::post('/zone/removerecord', 'ZoneController@postRemoverecord');
+Route::get('/zone/get', 'ZoneController@get');
+
+Route::get('/user/all', 'UserController@getAllUsers');
+Route::post('/user/save', 'UserController@postSave');
+Route::post('/user/remove', 'UserController@postRemove');
+
+
+/*Route::controllers([
 	'zone'	=> 'ZoneController',
 	'user'	=> 'UserController',
 	'login'	=> 'LoginController'
-]);
+]);*/

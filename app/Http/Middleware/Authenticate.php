@@ -32,10 +32,10 @@ class Authenticate {
 	 */
 	public function handle($request, Closure $next)
 	{
-		
+
 		if ($this->auth->guest()){
 			$authtype=\Config::get('app.authtype');
-
+			
 			if ($request->ajax()){
 				return response('Unauthorized.', 401);
 			}else if ($authtype == "google") {

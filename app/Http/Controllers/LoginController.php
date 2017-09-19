@@ -18,7 +18,7 @@ class LoginController extends Controller {
         $this->layout->with('avatar', $avatar);
     }
 
-    public function getGoogle()
+    public function google()
    {
      return \View::make('login.google');
    }
@@ -82,48 +82,11 @@ class LoginController extends Controller {
     		}else{
         		abort(401);
     		}
-
-    		//we register the non existing user
-    		//var_dump($ouser);
-    		/*{ ["email"]=> string(21) "ghyster.guu@gmail.com"
-    		 * ["familyName"]=> string(3) "Guu"
-    		 * ["gender"]=> NULL
-    		 * ["givenName"]=> string(7) "Ghyster"
-    		 * ["hd"]=> NULL
-    		 * ["id"]=> string(21) "117520916275417916022"
-    		 * ["link"]=> string(45) "https://plus.google.com/117520916275417916022"
-    		 * ["locale"]=> string(2) "fr"
-    		 * ["name"]=> string(11) "Ghyster Guu"
-    		 * ["picture"]=> string(92) "https://lh5.googleusercontent.com/-p2h7EhpOdvs/AAAAAAAAAAI/AAAAAAAAABQ/JlbQ9tHs9-w/photo.jpg"
-    		 * ["verifiedEmail"]=> bool(true)
-    		 * ["modelData":protected]=> array(3) {
-    		 * 		["verified_email"]=> bool(true)
-    		 * 		["given_name"]=> string(7) "Ghyster"
-    		 * 		["family_name"]=> string(3) "Guu"
-    		 * }
-    		 * ["processed":protected]=> array(0) { }
-    		 * }
-    		*/
-    		/*$data=array();
-    		$data['lastname']=$ouser["familyName"];
-    		$data['firstname']=$ouser["givenName"];
-    		$data['mail']=$ouser["email"];
-    		$data['password']="";
-    		$user=User::create($data);
-    		$user->uid=$user->id;
-    		$user->save();
-    		File::put(Config::get("app.avatar_path").DIRECTORY_SEPARATOR. $user->id.".jpg",file_get_contents($ouser["picture"]."?sz=96"));
-
-    		Auth::login($user,true);
-    		$cookie = Cookie::forever('avatar', Auth::user()->id);
-    		return Redirect::to('/user/settings')->withCookie($cookie);
-        */
-    		//die();
     	}
 
     }
 
-    public function getLogout(){
+    public function logout(){
     	\Auth::logout();
 			return \View::make('login.logout');
     	//return \Redirect::to('/');

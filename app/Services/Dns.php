@@ -28,7 +28,7 @@ class Dns {
 	}
 	private function getPTR($zone,$ip){
 
-		$this->resolver->signTSIG(\Crypt::decrypt($zone->tsigname),\Crypt::decrypt($zone->tsigkey));
+		$this->resolver->signTSIG(\Crypt::decrypt($zone->tsigname),\Crypt::decrypt($zone->tsigkey),\Crypt::decrypt($zone->tsigalgo));
 		$result =$this->resolver->query($this->getReverseIP($ip).'.in-addr.arpa',"PTR");
 
 		$ret=[];
@@ -50,7 +50,7 @@ class Dns {
 	}
 
 	private function canAddPTR($zone, $ip){
-		$this->resolver->signTSIG(\Crypt::decrypt($zone->tsigname),\Crypt::decrypt($zone->tsigkey));
+		$this->resolver->signTSIG(\Crypt::decrypt($zone->tsigname),\Crypt::decrypt($zone->tsigkey),\Crypt::decrypt($zone->tsigalgo));
 
 		try{
 			$result =$this->resolver->query($this->getReverseIP($ip).'.in-addr.arpa',"PTR");
@@ -75,16 +75,16 @@ class Dns {
 
 		$ret=array();
 		if($zone->tsigname!="" && $zone->tsigkey!=""){
-			$this->resolver->signTSIG(\Crypt::decrypt($zone->tsigname),\Crypt::decrypt($zone->tsigkey));
-			try{
+			$this->resolver->signTSIG(\Crypt::decrypt($zone->tsigname),\Crypt::decrypt($zone->tsigkey),\Crypt::decrypt($zone->tsigalgo));
+			//try{
 				$result =$this->resolver->query($zone->name, 'AXFR');
 				foreach($result->answer as $rr){
 					$ret[]=$rr;
 				}
-			} catch(\Net_DNS2_Exception $e) {
+			/*} catch(\Net_DNS2_Exception $e) {
 				abort(500, $e->getMessage());
 				die();
-			}
+			}*/
 		}
 		return $ret;
 	}
@@ -121,16 +121,19 @@ class Dns {
 							$updaterrev->delete($rr);
 							if($this->loggingenable()){\Log::info(\Auth::user()->username.' DELETE '.$rr);}
 						}
-						$updaterrev->signTSIG(\Crypt::decrypt($zonerev->tsigname),\Crypt::decrypt($zonerev->tsigkey));
+						$updaterrev->signTSIG(\Crypt::decrypt($zonerev->tsigname),\Crypt::decrypt($zonerev->tsigkey),\Crypt::decrypt($zone->tsigalgo));
 						$updaterrev->update();
 					}
 				}
 			}
 
 			$record=\Net_DNS2_RR::fromString($rname.' '.$data["ttl"].' '.$data["type"].' '.$rvalue);
-			$updater->add($record);
-			$updater->signTSIG(\Crypt::decrypt($zone->tsigname),\Crypt::decrypt($zone->tsigkey));
+			if(!$updater->add($record)){
+				echo "error adding record to the updater";
+			}
+			$updater->signTSIG(\Crypt::decrypt($zone->tsigname),\Crypt::decrypt($zone->tsigkey),\Crypt::decrypt($zone->tsigalgo));
 			$updater->update();
+			
 			if($this->loggingenable()){\Log::info(\Auth::user()->username.' CREATE '.$record);}
 			// create reverse record if authoritative
 			if($data["type"]=="A" && $this->managereverse()){
@@ -139,7 +142,7 @@ class Dns {
 					$revrecord=\Net_DNS2_RR::fromString($this->getReverseIP($rvalue).'.in-addr.arpa '.$data["ttl"].' PTR '.$rname);
 					$updaterrev = new \Net_DNS2_Updater($zonerev->name,array('nameservers' => $this->servers, 'cache_type' => 'none', 'recurse' => false));
 					$updaterrev->add($revrecord);
-					$updaterrev->signTSIG(\Crypt::decrypt($zonerev->tsigname),\Crypt::decrypt($zonerev->tsigkey));
+					$updaterrev->signTSIG(\Crypt::decrypt($zonerev->tsigname),\Crypt::decrypt($zonerev->tsigkey),\Crypt::decrypt($zone->tsigalgo));
 					$updaterrev->update();
 					if($this->loggingenable()){\Log::info(\Auth::user()->username.' CREATE '.$revrecord);}
 				}
@@ -147,6 +150,7 @@ class Dns {
 		} catch(\Net_DNS2_Exception $e) {
 			echo "::update() failed: ", $e->getMessage(), "\n";
 		}
+		//die();
 	}
 
 	public function removeRecord($data,\App\Zone $zone){
@@ -154,7 +158,7 @@ class Dns {
 		try {
 			$record=\Net_DNS2_RR::fromString($data["name"].'.'.$zone->name.' '.$data["ttl"].' '.$data["type"].' '.$data["rdata"]);
 			$updater->delete($record);
-			$updater->signTSIG(\Crypt::decrypt($zone->tsigname),\Crypt::decrypt($zone->tsigkey));
+			$updater->signTSIG(\Crypt::decrypt($zone->tsigname),\Crypt::decrypt($zone->tsigkey),\Crypt::decrypt($zone->tsigalgo));
 			$updater->update();
 			if($this->loggingenable()){\Log::info(\Auth::user()->username.' DELETE '.$record);}
 			//delete reverse record
@@ -167,12 +171,22 @@ class Dns {
 						$updaterrev->delete($rr);
 						if($this->loggingenable()){\Log::info(\Auth::user()->username.' DELETE '.$rr);}
 					}
-					$updaterrev->signTSIG(\Crypt::decrypt($zonerev->tsigname),\Crypt::decrypt($zonerev->tsigkey));
+					$updaterrev->signTSIG(\Crypt::decrypt($zonerev->tsigname),\Crypt::decrypt($zonerev->tsigkey),\Crypt::decrypt($zone->tsigalgo));
 					$updaterrev->update();
 				}
 			}
 		} catch(\Net_DNS2_Exception $e) {
 			echo "::update() failed: ", $e->getMessage(), "\n";
 		}
+	}
+
+	public function getRecordValue($rr){
+			$full=$rr->__toString();
+			$values=preg_split('/[\s]+/', $full);
+			$f1 = array_shift($values);
+			$f2 = array_shift($values);
+			$f3 = array_shift($values);
+			$f4 = array_shift($values);
+			return implode(" ",$values);
 	}
 }

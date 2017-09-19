@@ -27,7 +27,7 @@ return [
 	*/
 
 	'debug' => env('APP_DEBUG', true),
-
+  
 	/*
 	|--------------------------------------------------------------------------
 	| Application URL
@@ -39,7 +39,7 @@ return [
 	|
 	*/
 
-	'url' => 'http://dns.ghyster.fr',
+	'url' => 'http://dnsdev.ghyster.fr',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -92,7 +92,7 @@ return [
 	*/
 	'key' => env('APP_KEY'),
 
-	'cipher' => MCRYPT_RIJNDAEL_128,
+	'cipher' => 'AES-256-CBC',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -219,7 +219,7 @@ return [
   'dnsautoreverse' => env('DNS_AUTO_REVERSE'),
   'dnsttl' => env('DNS_TTL'),
 
-	'authtype' => env('AUTH_TYPE'), //choose between saml, google
+	'authtype' => env('AUTH_TYPE2'), //choose between saml, google
 	'google_client_id' => env('GOOGLE_CLIENT_ID'),
 	'google_client_secret' => env('GOOGLE_CLIENT_SECRET'),
   'google_application_name' => env('GOOGLE_APPLICATION_NAME'),

@@ -23,7 +23,7 @@ class UserController extends Controller {
 		}
 	}
 
-	private function getAllUsers(){
+	public function getAllUsers(){
 		$users=\App\User::all();
 
 		$ret=array();
@@ -51,14 +51,7 @@ class UserController extends Controller {
 		return \Response::json( $ret);
 	}
 
-	/**
-	 * list user zones.
-	 *
-	 * @return Response
-	 */
-	public function getAll(){
-		return $this->getAllUsers();
-	}
+
 
 	public function postSave(){
 

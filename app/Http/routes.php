@@ -11,9 +11,7 @@
 |
 */
 
-
 Route::get('/', 'HomeController@index');
-
 
 Route::get('/login/google', 'LoginController@google');
 Route::post('/login/google', 'LoginController@postGoogle');
@@ -29,9 +27,8 @@ Route::get('/user/all', 'UserController@getAllUsers');
 Route::post('/user/save', 'UserController@postSave');
 Route::post('/user/remove', 'UserController@postRemove');
 
-
 /*Route::controllers([
-	'zone'	=> 'ZoneController',
-	'user'	=> 'UserController',
-	'login'	=> 'LoginController'
+    'zone'	=> 'ZoneController',
+    'user'	=> 'UserController',
+    'login'	=> 'LoginController'
 ]);*/
